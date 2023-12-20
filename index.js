@@ -1,7 +1,7 @@
 // Require the necessary discord.js classes
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Collection, Events, GatewayIntentBits, REST, Routes } = require('discord.js');
+const { Client, Collection, Events, GatewayIntentBits, REST, Routes, EmbedBuilder } = require('discord.js');
 const { token, clientId, guildId } = require('./config.json')
 
 // Create a new client instance
@@ -58,6 +58,23 @@ client.on(Events.InteractionCreate, async interaction => {
 		}
 	}
 });
+
+client.on(Events.InteractionCreate, async interaction => {
+	if(!interaction.isButton()) return;
+
+	if (interaction.customId === 'test-button') {
+		await interaction.reply('Test button!')
+		return;
+	}
+
+	if (interaction.customId === 'embed-button') {
+		const embed = new EmbedBuilder()
+			.setColor(0x0099FF)
+			.setTitle('Example Embed')
+		await interaction.reply({ embeds: [embed] })
+		return
+	}
+})
 
 // Log in to Discord with your client's token
 client.login(token);
